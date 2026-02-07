@@ -106,7 +106,11 @@ def train_model(
     optimizer = torch.optim.SGD(model.parameters(), lr=lr)
     model = model.to(device)
 
-    history: dict[str, list[float]] = {"train_loss": [], "val_loss": []}
+    history: dict[str, list[float]] = {
+        "batch_train_loss": [],
+        "epoch_train_loss": [],
+        "val_loss": [],
+    }
     best_loss = float("inf")
     best_epoch = -1
     best_state = copy.deepcopy(model.state_dict())
@@ -129,10 +133,11 @@ def train_model(
             loss.backward()
             optimizer.step()
             train_losses.append(float(loss.item()))
+            history["batch_train_loss"].append(float(loss.item()))
 
         train_loss = float(np.mean(train_losses))
         val_loss = evaluate_loss(model, val_loader, criterion, device=device)
-        history["train_loss"].append(train_loss)
+        history["epoch_train_loss"].append(train_loss)
         history["val_loss"].append(val_loss)
 
         if val_loss < best_loss:

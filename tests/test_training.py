@@ -40,7 +40,12 @@ def test_training_loss_decreases():
     val_loader = build_dataloader(X[400:], y[400:], batch_size=64, shuffle=False)
     model = LogisticRegressionModel(X.shape[1])
     result = train_model(model, train_loader, val_loader, max_epochs=20, patience=20)
-    assert result.history["train_loss"][-1] < result.history["train_loss"][0]
+    assert (
+        result.history["epoch_train_loss"][-1] < result.history["epoch_train_loss"][0]
+    )
+    assert len(result.history["batch_train_loss"]) >= len(
+        result.history["epoch_train_loss"]
+    )
 
 
 def test_extract_linear_weights_dimension():
