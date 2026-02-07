@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biostat-826-code"
+version = "0.1.0"
+description = "Reusable utilities and Assignment 1 notebook for BIOSTAT 826"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: integration tests that read full MIMIC-IV files",
+]
+addopts = "-q"
